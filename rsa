@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+import sys
+import time
+from math import sqrt, ceil
+
+
+def is_prime(n):
+    """
+    Fun tha test whether n is a prime number.
+    """
+    if n < 2:
+        return False
+    for i in range(2, int(sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+
+def factorize_rsa_num(n):
+    """
+    Fun that factorize an RSA number n into two prime numbers p and q.
+    """
+    for i in range(2, int(sqrt(n)) + 1):
+        if n % i == 0:
+            if is_prime(i) and is_prime(n//i):
+                return f"{n}={i}*{n//i}"
+    return f"{n} is prime"
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} <file>")
+        sys.exit(1)
+
+    try:
+        with open(sys.argv[1], "r") as f:
+            n = int(f.readline().strip())
+            print(factorize_rsa_num(n))
+    except OSError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
